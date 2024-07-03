@@ -4,23 +4,26 @@ from starlette.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.config import DATABASE
 
-if DATABASE == "sqlite":
-    from app.database.sqlite_db import SQLiteDatabase as Database
-elif DATABASE == "postgres":
-    from app.database.postgre_db import PostgresDatabase as Database
-else:
-    raise ValueError("Unknown database type")
-
-database = Database()
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await database.init_db()
-    yield
+# if DATABASE == "sqlite":
+#     from app.database.sqlite_db import SQLiteDatabase as Database
+# elif DATABASE == "postgres":
+#     from app.database.postgre_db import PostgresDatabase as Database
+# else:
+#     raise ValueError("Unknown database type")
+#
+# database = Database()
 
 
-app = FastAPI(lifespan=lifespan)
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     await database.init_db()
+#     yield
+
+
+# app = FastAPI(lifespan=lifespan)
+
+app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
