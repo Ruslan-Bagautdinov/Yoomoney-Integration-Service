@@ -3,5 +3,6 @@
 .git/
 .stuff/
 app/database/
+test.db
 **/__pycache__/
 .env
