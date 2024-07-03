@@ -31,9 +31,14 @@ app.add_middleware(
 
 # Import routers and use the database instance
 
+from app.routers import token_request as token_request
+from app.routers import token_receive as token_receive
+
+app.include_router(token_request.router)
+app.include_router(token_receive.router)
+
+
 @app.get("/")
 async def root():
     return RedirectResponse(url='/docs')
-
-
 
