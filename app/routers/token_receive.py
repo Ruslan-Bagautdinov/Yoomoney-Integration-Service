@@ -29,17 +29,24 @@ async def receive_authorization_code(request: Request, user_id: str):
     #   вытащить его client_id, client_secret и redirect_uri
     #   ну и ещё user_redirect_link - куда его послать после оплаты
 
-    client_id = ''
-    client_secret = ''
-    redirect_uri = ''
-    user_redirect_link = ''
+    client_id = '17EB7B93E988B9716BF4771EB40254425CAFC628C744A0BBDA3B306742BAADE3'
+    # client_secret = ''
+    redirect_uri = 'https://api.terrapay.online/yoomoney_callback/666'
+
+    if user_id == '666':
+
+        user_redirect_link = 'https://www.youtube.com/watch?v=l2lUfj3wx2Q'
+
+    else:
+
+        user_redirect_link = 'https://www.example.com'
 
     payload = {
         "code": code,
         "client_id": client_id,
         "grant_type": "authorization_code",
-        "redirect_uri": redirect_uri,
-        "client_secret": client_secret,
+        "redirect_uri": redirect_uri
+        # "client_secret": client_secret,
     }
 
     response = requests.post("https://yoomoney.ru/oauth/token", data=payload)
@@ -51,6 +58,8 @@ async def receive_authorization_code(request: Request, user_id: str):
 
     access_token_response = response.json()
     access_token = access_token_response.get("access_token")
+
+    logger.info(f"access_token: {access_token}")
 
     #   здесь надо сохранить access_token в базу для юзера
     #   чтобы потом отправлять мне при запросах
