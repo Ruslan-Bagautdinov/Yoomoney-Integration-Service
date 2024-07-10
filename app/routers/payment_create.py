@@ -73,7 +73,9 @@ async def create_payment(request_body: QuickpayRequest):
     if quickpay.response.status_code != 200:
         raise HTTPException(status_code=quickpay.response.status_code, detail="Failed to create payment")
 
-    return {"redirected_url": quickpay.redirected_url}
+    # return quickpay.base_url
+
+    return quickpay.redirected_url
 
 
 #
