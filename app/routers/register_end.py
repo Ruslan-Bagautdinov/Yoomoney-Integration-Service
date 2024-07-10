@@ -19,6 +19,7 @@ class RegisterEndResponse(BaseModel):
     site_address: str
     redirect_uri: str
     notification_uri: str
+    client_id: str
 
 
 @router.post("/register_end/")

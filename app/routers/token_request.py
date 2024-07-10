@@ -3,8 +3,6 @@ from pydantic import BaseModel
 import requests
 import logging
 
-from app.config import YM_REDIRECT_URI_BASE, YM_REDIRECT_ENDPOINT
-
 router = APIRouter()
 
 logging.basicConfig(level=logging.INFO)
@@ -18,6 +16,9 @@ class AuthorizationRequest(BaseModel):
 
 @router.post("/request_authorization/")
 async def request_authorization(request_body: AuthorizationRequest):
+
+    YM_REDIRECT_URI_BASE = 'https://api.terrapay.online'
+    YM_REDIRECT_ENDPOINT = '/yoomoney_callback/'
 
     scope = ["account-info",
              "operation-history",
