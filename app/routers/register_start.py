@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException
+from loguru import logger
 from pydantic import BaseModel
 
-from loguru import logger
+# Own import
+from app.config import YM_REDIRECT_URI_BASE, YM_REDIRECT_ENDPOINT
 
-YM_REDIRECT_URI_BASE = 'https://api.terrapay.online'
-YM_REDIRECT_ENDPOINT = '/yoomoney_callback/'
 
 router = APIRouter()
 
@@ -22,18 +22,29 @@ class RegisterStartResponse(BaseModel):
 
 @router.get("/register_start/")
 async def register_start_handler(request_body: RegisterStartRequest):
-    logger.info(request_body)
+    """
+    Handle the start of the Yoomoney registration process.
 
-    name_for_users = "TerraPay"
-    site_address = YM_REDIRECT_URI_BASE
-    redirect_uri = f"{YM_REDIRECT_URI_BASE}{YM_REDIRECT_ENDPOINT}{request_body.user_id}"
-    notification_uri = redirect_uri
+    Args:
+        request_body (RegisterStartRequest): The request containing the user ID.
 
-    response_data = RegisterStartResponse(
-        name_for_users=name_for_users,
-        site_address=site_address,
-        redirect_uri=redirect_uri,
-        notification_uri=notification_uri
-    )
+    Returns:
+        RegisterStartResponse: The response containing the registration details.
+    """
+    try:
+        logger.info(request_body)
+        name_for_users = "YourSystemName"
+        site_address = f"{YM_REDIRECT_URI_BASE}"
+        redirect_uri = f"{YM_REDIRECT_URI_BASE}/{YM_REDIRECT_ENDPOINT}/{request_body.user_id}"
+        notification_uri = redirect_uri
 
-    return response_data
+        response_data = RegisterStartResponse(
+            name_for_users=name_for_users,
+            site_address=site_address,
+            redirect_uri=redirect_uri,
+            notification_uri=notification_uri
+        )
+        return response_data
+    except Exception as e:
+        logger.error(f"Error in register_start_handler: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error")
