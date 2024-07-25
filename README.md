@@ -98,6 +98,11 @@ To request authorization from Yoomoney, send a POST request to /request_authoriz
 
 ### Receive Authorization Code
 Yoomoney will redirect the user to the callback URL with the authorization code. The application will handle this callback and exchange the code for an access token.
+Use this access token for check the payment statuses.
+
+
+###  Create Payment
+To create a payment, send a POST request to /create_payment/ with the following JSON payload:
 
 ```json
 {
